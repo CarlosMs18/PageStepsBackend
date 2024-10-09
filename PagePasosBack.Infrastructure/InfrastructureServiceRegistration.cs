@@ -12,8 +12,8 @@ namespace PagePasosBack.Infrastructure
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<PagePasosDbContext>(options =>
-                 options.UseSqlServer(configuration.GetConnectionString("ConnectionString"))
-             );
+               options.UseSqlServer(configuration.GetConnectionString("ConnectionString"))
+           );
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IAsyncRepository<>), typeof(RepositoryBase<>));
