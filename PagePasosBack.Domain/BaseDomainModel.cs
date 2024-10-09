@@ -1,6 +1,6 @@
 ﻿namespace PagePasosBack.Domain
 {
-    public class BaseDomainModel
+    public abstract class BaseDomainModel
     {
         public int Id { get; set; }
     }
