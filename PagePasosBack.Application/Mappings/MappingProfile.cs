@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PagePasosBack.Application.Features.Departments.Queries;
 using PagePasosBack.Application.Features.Districts.Queries;
+using PagePasosBack.Application.Features.Provinces.Queries;
 
 namespace PagePasosBack.Application.Mappings
 {
@@ -10,6 +11,8 @@ namespace PagePasosBack.Application.Mappings
         {
             this.AddMapGetAllDepartmentListQuery();
             this.AddMapGetAllDistrictListQuery();
+            this.AddMapGetAllProvinceListQuery();
+
         }
     }
 }
