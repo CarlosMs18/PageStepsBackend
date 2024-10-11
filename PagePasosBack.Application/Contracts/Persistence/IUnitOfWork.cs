@@ -5,6 +5,7 @@ namespace PagePasosBack.Application.Contracts.Persistence
     public interface IUnitOfWork : IDisposable
     {
         ICompanyRepository CompanyRepository { get; }
+        IDepartmentRepository  DepartmentRepository { get; }    
         IDistrictRepository DistrictRepository { get; }
         IProvinceRepository ProvinceRepository { get; } 
         IAsyncRepository<TEntity> Repository<TEntity>() where TEntity : BaseDomainModel;
