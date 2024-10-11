@@ -6,6 +6,7 @@ namespace PagePasosBack.Infrastructure.Persistence
 {
     public class PagePasosDbContext :DbContext
     {
+        public DbSet<Department> Departments { get; set; }
         public DbSet<District> Districts { get; set; }
         public DbSet<Province> Provinces { get; set; }
         public DbSet<Company> Companies { get; set; }
@@ -19,7 +20,18 @@ namespace PagePasosBack.Infrastructure.Persistence
 
             builder.Entity<Province>().Property(x => x.Code).IsRequired(false);
 
+            builder.Entity<Department>().Property(x => x.Code).IsRequired(false);
+
             builder.Entity<Company>().Property(x => x.Name).IsRequired(false);
+
+            #region Province    
+            builder.Entity<Province>()
+                .HasOne(x => x.Department)
+                .WithMany(x => x.Provinces)
+                .OnDelete(DeleteBehavior.Cascade);  
+
+
+            #endregion
 
             #region District
             builder.Entity<District>()
@@ -31,7 +43,7 @@ namespace PagePasosBack.Infrastructure.Persistence
 
             #region Company
             builder.Entity<Company>()
-                   .HasOne(x => x.Province)
+                   .HasOne(x => x.Department)
                    .WithMany(x => x.Companies)
                    .OnDelete(DeleteBehavior.Cascade);   
 
