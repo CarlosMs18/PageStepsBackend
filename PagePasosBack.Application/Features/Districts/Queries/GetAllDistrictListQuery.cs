@@ -16,6 +16,7 @@ namespace PagePasosBack.Application.Features.Districts.Queries
         public string Name { get; set; }
         public string Code { get; set; }        
         public int ProvinceId { get; set; }
+        public string ProvinceName { get; set; }       
     }
 
     public static class GetAllDistrictListQueryMapper
@@ -25,7 +26,8 @@ namespace PagePasosBack.Application.Features.Districts.Queries
             mappingProfile.CreateMap<District, GetAllDistrictListQueryResponse>()
                 .ForMember(d => d.Name, opt => opt.MapFrom(o => o.Name))
                 .ForMember(d => d.Code, opt => opt.MapFrom(o => o.Code))
-                .ForMember(d => d.ProvinceId, opt => opt.MapFrom(o => o.ProvinceId));     
+                .ForMember(d => d.ProvinceId, opt => opt.MapFrom(o => o.ProvinceId))
+                .ForMember(d => d.ProvinceName, opt => opt.MapFrom(o =>o.Province.Name));     
         }
     }
 
@@ -42,7 +44,12 @@ namespace PagePasosBack.Application.Features.Districts.Queries
 
         public async Task<IEnumerable<GetAllDistrictListQueryResponse>> Handle(GetAllDistrictListQuery request, CancellationToken cancellationToken)
         {
-            var districtList = await _unitOfWork.DistrictRepository.GetAsync();
+            var districtList = await _unitOfWork.DistrictRepository.GetAsync(
+                                 null,  
+                                 null,  
+                                 true,  
+                                 d => d.Province  
+                             );
             return _mapper.Map<IEnumerable<GetAllDistrictListQueryResponse>>(districtList);        
         }
     }
