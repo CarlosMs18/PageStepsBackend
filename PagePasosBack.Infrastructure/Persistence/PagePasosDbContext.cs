@@ -10,6 +10,10 @@ namespace PagePasosBack.Infrastructure.Persistence
         public DbSet<District> Districts { get; set; }
         public DbSet<Province> Provinces { get; set; }
         public DbSet<Company> Companies { get; set; }
+        public DbSet<EnvironmentImpact> EnvironmentImpacts { get; set; }
+        public DbSet<EnvironmentalComponent> EnvironmentalComponents { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Presupuesto> Presupuestos { get; set; }
         public PagePasosDbContext(DbContextOptions<PagePasosDbContext> options) : base(options)
         {         
         }
@@ -45,7 +49,48 @@ namespace PagePasosBack.Infrastructure.Persistence
             builder.Entity<Company>()
                    .HasOne(x => x.Department)
                    .WithMany(x => x.Companies)
-                   .OnDelete(DeleteBehavior.Cascade);   
+                   .OnDelete(DeleteBehavior.Cascade);
+            #endregion
+
+            #region Project
+            builder.Entity<Project>()
+                .HasOne(x => x.Company)
+                .WithMany(x => x.Projects)  
+                .OnDelete(DeleteBehavior.Cascade);
+            #endregion
+
+            #region Presupuesto
+            builder.Entity<Presupuesto>()
+                .HasOne(x => x.Project)
+                .WithMany(x => x.Presupuestos)
+                .OnDelete(DeleteBehavior.Cascade);
+            #endregion
+
+
+            #region EnvironmentalComponent
+            builder.Entity<EnvironmentalComponent>()
+                .HasOne(x => x.District)
+                .WithMany(x => x.EnvironmentalComponents)
+                .OnDelete(DeleteBehavior.Restrict); // No eliminar en cascada
+
+            builder.Entity<EnvironmentalComponent>()
+                .HasOne(x => x.Project)
+                .WithMany(x => x.EnvironmentalComponents)
+                .OnDelete(DeleteBehavior.Restrict); // No eliminar en cascada
+            #endregion
+
+
+            #region EnviromentImpact
+            builder.Entity<EnvironmentImpact>()
+                .HasOne(x => x.District)
+                .WithMany(x => x.EnvironmentImpacts)
+                 .OnDelete(DeleteBehavior.NoAction);
+
+
+            builder.Entity<EnvironmentImpact>()
+                .HasOne(x => x.Project)
+                .WithMany(x => x.EnvironmentImpacts)
+                 .OnDelete(DeleteBehavior.NoAction);
 
             #endregion
         }
@@ -92,3 +137,4 @@ namespace PagePasosBack.Infrastructure.Persistence
         }
     }
 }
+

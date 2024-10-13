@@ -8,5 +8,6 @@
         public Department Department { get; set; }
         public DateTime DateCreation { get; set; }
         public bool State { get; set; }
+        public ICollection<Project> Projects { get; set; }
     }
 }
