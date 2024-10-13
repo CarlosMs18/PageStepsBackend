@@ -12,8 +12,8 @@ using PagePasosBack.Infrastructure.Persistence;
 namespace PagePasosBack.Infrastructure.Migrations
 {
     [DbContext(typeof(PagePasosDbContext))]
-    [Migration("20241013020703_Inicial")]
-    partial class Inicial
+    [Migration("20241013221558_InicialMigracion")]
+    partial class InicialMigracion
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace PagePasosBack.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreation")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int>("DistrictId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -51,7 +51,7 @@ namespace PagePasosBack.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("DistrictId");
 
                     b.ToTable("Companies");
                 });
@@ -133,14 +133,9 @@ namespace PagePasosBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DistrictId");
-
-                    b.HasIndex("ProjectId");
 
                     b.ToTable("EnvironmentImpacts");
                 });
@@ -164,14 +159,9 @@ namespace PagePasosBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DistrictId");
-
-                    b.HasIndex("ProjectId");
 
                     b.ToTable("EnvironmentalComponents");
                 });
@@ -195,7 +185,8 @@ namespace PagePasosBack.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("ProjectId")
+                        .IsUnique();
 
                     b.ToTable("Presupuestos");
                 });
@@ -256,13 +247,13 @@ namespace PagePasosBack.Infrastructure.Migrations
 
             modelBuilder.Entity("PagePasosBack.Domain.Licitacion.Company", b =>
                 {
-                    b.HasOne("PagePasosBack.Domain.Licitacion.Department", "Department")
+                    b.HasOne("PagePasosBack.Domain.Licitacion.District", "District")
                         .WithMany("Companies")
-                        .HasForeignKey("DepartmentId")
+                        .HasForeignKey("DistrictId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Department");
+                    b.Navigation("District");
                 });
 
             modelBuilder.Entity("PagePasosBack.Domain.Licitacion.District", b =>
@@ -284,15 +275,7 @@ namespace PagePasosBack.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("PagePasosBack.Domain.Licitacion.Project", "Project")
-                        .WithMany("EnvironmentImpacts")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("District");
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("PagePasosBack.Domain.Licitacion.EnvironmentalComponent", b =>
@@ -300,25 +283,17 @@ namespace PagePasosBack.Infrastructure.Migrations
                     b.HasOne("PagePasosBack.Domain.Licitacion.District", "District")
                         .WithMany("EnvironmentalComponents")
                         .HasForeignKey("DistrictId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("PagePasosBack.Domain.Licitacion.Project", "Project")
-                        .WithMany("EnvironmentalComponents")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("District");
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("PagePasosBack.Domain.Licitacion.Presupuesto", b =>
                 {
                     b.HasOne("PagePasosBack.Domain.Licitacion.Project", "Project")
-                        .WithMany("Presupuestos")
-                        .HasForeignKey("ProjectId")
+                        .WithOne("Presupuesto")
+                        .HasForeignKey("PagePasosBack.Domain.Licitacion.Presupuesto", "ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -330,7 +305,7 @@ namespace PagePasosBack.Infrastructure.Migrations
                     b.HasOne("PagePasosBack.Domain.Licitacion.Company", "Company")
                         .WithMany("Projects")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -354,13 +329,13 @@ namespace PagePasosBack.Infrastructure.Migrations
 
             modelBuilder.Entity("PagePasosBack.Domain.Licitacion.Department", b =>
                 {
-                    b.Navigation("Companies");
-
                     b.Navigation("Provinces");
                 });
 
             modelBuilder.Entity("PagePasosBack.Domain.Licitacion.District", b =>
                 {
+                    b.Navigation("Companies");
+
                     b.Navigation("EnvironmentImpacts");
 
                     b.Navigation("EnvironmentalComponents");
@@ -368,11 +343,8 @@ namespace PagePasosBack.Infrastructure.Migrations
 
             modelBuilder.Entity("PagePasosBack.Domain.Licitacion.Project", b =>
                 {
-                    b.Navigation("EnvironmentImpacts");
-
-                    b.Navigation("EnvironmentalComponents");
-
-                    b.Navigation("Presupuestos");
+                    b.Navigation("Presupuesto")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PagePasosBack.Domain.Licitacion.Province", b =>

@@ -47,7 +47,7 @@ namespace PagePasosBack.Infrastructure.Persistence
 
             #region Company
             builder.Entity<Company>()
-                   .HasOne(x => x.Department)
+                   .HasOne(x => x.District)
                    .WithMany(x => x.Companies)
                    .OnDelete(DeleteBehavior.Cascade);
             #endregion
@@ -56,14 +56,21 @@ namespace PagePasosBack.Infrastructure.Persistence
             builder.Entity<Project>()
                 .HasOne(x => x.Company)
                 .WithMany(x => x.Projects)  
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Project>()
+            .HasOne(p => p.Presupuesto)
+                    .WithOne(p => p.Project)
+                    .HasForeignKey<Presupuesto>(p => p.ProjectId)  // Clave foránea en Presupuesto
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
             #endregion
+
 
             #region Presupuesto
             builder.Entity<Presupuesto>()
-                .HasOne(x => x.Project)
-                .WithMany(x => x.Presupuestos)
-                .OnDelete(DeleteBehavior.Cascade);
+                    .HasIndex(p => p.ProjectId)
+                    .IsUnique();
             #endregion
 
 
@@ -71,12 +78,7 @@ namespace PagePasosBack.Infrastructure.Persistence
             builder.Entity<EnvironmentalComponent>()
                 .HasOne(x => x.District)
                 .WithMany(x => x.EnvironmentalComponents)
-                .OnDelete(DeleteBehavior.Restrict); // No eliminar en cascada
-
-            builder.Entity<EnvironmentalComponent>()
-                .HasOne(x => x.Project)
-                .WithMany(x => x.EnvironmentalComponents)
-                .OnDelete(DeleteBehavior.Restrict); // No eliminar en cascada
+                .OnDelete(DeleteBehavior.NoAction);
             #endregion
 
 
@@ -86,11 +88,6 @@ namespace PagePasosBack.Infrastructure.Persistence
                 .WithMany(x => x.EnvironmentImpacts)
                  .OnDelete(DeleteBehavior.NoAction);
 
-
-            builder.Entity<EnvironmentImpact>()
-                .HasOne(x => x.Project)
-                .WithMany(x => x.EnvironmentImpacts)
-                 .OnDelete(DeleteBehavior.NoAction);
 
             #endregion
         }

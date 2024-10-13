@@ -10,5 +10,6 @@
         public bool State { get; set; }
         public ICollection<EnvironmentalComponent> EnvironmentalComponents { get; set; }
         public ICollection<EnvironmentImpact> EnvironmentImpacts { get; set; }
+        public ICollection<Company> Companies { get; set; }
     }
 }

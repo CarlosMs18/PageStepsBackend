@@ -6,7 +6,6 @@
         public string? Code { get; set; }
         public DateTime DateCreation { get; set; }
         public bool State { get; set; }
-        public ICollection<Province> Provinces { get; set; }
-        public ICollection<Company> Companies { get; set; }      
+        public ICollection<Province> Provinces { get; set; } 
     }
 }
