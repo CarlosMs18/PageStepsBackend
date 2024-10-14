@@ -17,6 +17,8 @@ namespace PagePasosBack.Infrastructure.Repositories
         public IProvinceRepository provinceRepository;
         public IDepartmentRepository departmentRepository;
         public IEnvironmentComponentRepository environmentComponentRepository;
+        public IEnvironmentImpactRepository environmentImpactRepository { get; set; }
+        public IProjectRepository projectRepository {  get; set; }  
 
 
         public UnitOfWork(PagePasosDbContext context)
@@ -31,7 +33,8 @@ namespace PagePasosBack.Infrastructure.Repositories
         public IDistrictRepository DistrictRepository => districtRepository ??= new DistrictRepository(_context);
         public IDepartmentRepository DepartmentRepository => departmentRepository ??=new DepartmentRepository(_context);    
         public IEnvironmentComponentRepository EnvironmentComponentRepository => environmentComponentRepository ??=new EnvironmentComponentRepository(_context);
-
+        public IEnvironmentImpactRepository EnvironmentImpactRepository => environmentImpactRepository ??= new EnvironmentImpactRepository(_context);   
+        public IProjectRepository ProjectRepository => projectRepository ??= new ProjectRepository(_context);   
         public async Task<int> Complete()
         {
             try
@@ -48,9 +51,9 @@ namespace PagePasosBack.Infrastructure.Repositories
         {
             _context.Dispose();
         }
-        public Task BeginTransaction()
+        public async Task BeginTransaction()
         {
-            throw new NotImplementedException();
+            transaction = await _context.Database.BeginTransactionAsync();
         }
         public async Task<int> ExecStoreProcedure(string sql, params object[] parameters)
         {

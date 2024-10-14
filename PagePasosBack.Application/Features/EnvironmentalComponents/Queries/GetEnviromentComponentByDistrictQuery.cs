@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using PagePasosBack.Application.Contracts.Persistence;
-using PagePasosBack.Domain.Licitacion;
 
 namespace PagePasosBack.Application.Features.EnvironmentalComponents.Queries
 {
@@ -28,14 +27,14 @@ namespace PagePasosBack.Application.Features.EnvironmentalComponents.Queries
 
         public async Task<IEnumerable<GetEnviromentComponentByDistrictQueryResponse>> Handle(GetEnviromentComponentByDistrictQuery request, CancellationToken cancellationToken)
         {
-            var enviromentComponent =  await _unitOfWork.EnvironmentComponentRepository.GetAsync(
+            var enviromentComponentList =  await _unitOfWork.EnvironmentComponentRepository.GetAsync(
                 c => c.DistrictId == request.districtId,
                 null,
                 true,
                 c => c.District
                 );
 
-            return enviromentComponent
+            return enviromentComponentList
                     .Select(x => new GetEnviromentComponentByDistrictQueryResponse
                     {
                         id = x.Id,

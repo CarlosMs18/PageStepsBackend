@@ -17,7 +17,7 @@ namespace PagePasosBack.WebApi.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult> ListCompanyByDistrict([FromQuery] int districtId)
+        public async Task<ActionResult> ListEnvironmentComponentByDistrict([FromQuery] int districtId)
         {
             return Ok(await _mediator.Send(new GetEnviromentComponentByDistrictQuery { districtId = districtId}));
         }

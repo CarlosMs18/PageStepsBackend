@@ -23,7 +23,8 @@ namespace PagePasosBack.Infrastructure
             services.AddScoped<IDistrictRepository, DistrictRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IEnvironmentComponentRepository, EnvironmentComponentRepository>();  
-            return services;
+            services.AddScoped<IEnvironmentImpactRepository, EnvironmentImpactRepository>();    
+            return services;        
         }
     }
 }
