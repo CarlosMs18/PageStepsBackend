@@ -1,5 +1,6 @@
 using PagePasosBack.Infrastructure;
 using PagePasosBack.Application;
+using PagePasosBack.WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+
+app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllers();
 //app.UseEndpoints(endpoints =>
 //{
