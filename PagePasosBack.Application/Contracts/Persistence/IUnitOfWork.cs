@@ -11,6 +11,7 @@ namespace PagePasosBack.Application.Contracts.Persistence
         IEnvironmentComponentRepository EnvironmentComponentRepository { get; }
         IEnvironmentImpactRepository EnvironmentImpactRepository { get; }   
         IProjectRepository ProjectRepository { get; }
+        IPresupuestoRepository PresupuestoRepository { get; }   
         IAsyncRepository<TEntity> Repository<TEntity>() where TEntity : BaseDomainModel;
         Task<int> Complete();
         Task<int> ExecStoreProcedure(string sql, params object[] parameters);

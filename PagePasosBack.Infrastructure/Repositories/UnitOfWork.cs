@@ -19,7 +19,7 @@ namespace PagePasosBack.Infrastructure.Repositories
         public IEnvironmentComponentRepository environmentComponentRepository;
         public IEnvironmentImpactRepository environmentImpactRepository { get; set; }
         public IProjectRepository projectRepository {  get; set; }  
-
+        public IPresupuestoRepository presupuestoRepository { get; set; }
 
         public UnitOfWork(PagePasosDbContext context)
         {
@@ -35,6 +35,7 @@ namespace PagePasosBack.Infrastructure.Repositories
         public IEnvironmentComponentRepository EnvironmentComponentRepository => environmentComponentRepository ??=new EnvironmentComponentRepository(_context);
         public IEnvironmentImpactRepository EnvironmentImpactRepository => environmentImpactRepository ??= new EnvironmentImpactRepository(_context);   
         public IProjectRepository ProjectRepository => projectRepository ??= new ProjectRepository(_context);   
+        public IPresupuestoRepository PresupuestoRepository => presupuestoRepository ??=new PresupuestoRepository(_context);    
         public async Task<int> Complete()
         {
             try
