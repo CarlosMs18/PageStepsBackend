@@ -22,6 +22,7 @@ namespace PagePasosBack.Infrastructure
             services.AddScoped<IProvinceRepository, ProvinceRepository>();
             services.AddScoped<IDistrictRepository, DistrictRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IEnvironmentComponentRepository, EnvironmentComponentRepository>();  
             return services;
         }
     }

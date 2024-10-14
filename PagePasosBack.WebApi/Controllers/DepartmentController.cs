@@ -18,7 +18,7 @@ namespace PagePasosBack.WebApi.Controllers
 
         [HttpGet("[action]")]
         public async Task<ActionResult> ListDepartment()
-        {
+            {
             return Ok(await _mediator.Send(new GetAllDepartmentListQuery()));
         }
       

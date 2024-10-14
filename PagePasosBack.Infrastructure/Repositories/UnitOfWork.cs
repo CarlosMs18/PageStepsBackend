@@ -16,6 +16,7 @@ namespace PagePasosBack.Infrastructure.Repositories
         public IDistrictRepository districtRepository;
         public IProvinceRepository provinceRepository;
         public IDepartmentRepository departmentRepository;
+        public IEnvironmentComponentRepository environmentComponentRepository;
 
 
         public UnitOfWork(PagePasosDbContext context)
@@ -29,6 +30,7 @@ namespace PagePasosBack.Infrastructure.Repositories
         public IProvinceRepository ProvinceRepository => provinceRepository ??=new ProvinceRepository(_context);
         public IDistrictRepository DistrictRepository => districtRepository ??= new DistrictRepository(_context);
         public IDepartmentRepository DepartmentRepository => departmentRepository ??=new DepartmentRepository(_context);    
+        public IEnvironmentComponentRepository EnvironmentComponentRepository => environmentComponentRepository ??=new EnvironmentComponentRepository(_context);
 
         public async Task<int> Complete()
         {
